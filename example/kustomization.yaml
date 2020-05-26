@@ -23,7 +23,8 @@ secretGenerator:
 - name: loadgen-api-keys
   namespace: scalyr-loadgen
   behavior: replace
-  env: api-keys.txt
+  envs:
+  - api-keys.txt
 
 configMapGenerator:
 - name: loadgen-telemetry-configmap
@@ -38,6 +39,7 @@ configMapGenerator:
   behavior: replace
   literals:
     - SCALYR_K8S_CLUSTER_NAME=your-loadtest-cluster
+    - LOG_MBS_PER_POD=5
 # Uncomment the next line to use the eu.scalyr.com instead of www.scalyr.com
 #    - SCALYR_SERVER=https://app.eu.scalyr.com
 

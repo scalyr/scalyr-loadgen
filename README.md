@@ -24,13 +24,21 @@ load generation logs twice.
 
 Execute these steps to run your load test:
 
-1.  Clone this repository
+1.  Install `kustomize` if necessary
+
+    These manifest files rely on `kustomize` for templating.  Rather than rely on the old version
+    packaged with `kubectl`, our instructions assume you have the standalone `kustomize` binary
+    installed.  We have tested the instructions with `kustomize` version 3.5.
+
+    To install, please refer to the [kustomize install instructions](https://github.com/kubernetes-sigs/kustomize/blob/master/docs/INSTALL.md).
+
+2.  Clone this repository
 
     ```
     git clone git@github.com:scalyr/scalyr-loadgen.git
     ```
 
-2.  Create a new directory to hold the configuration for your load test
+3.  Create a new directory to hold the configuration for your load test
 
     ```
     cd scalyr-loadgen
@@ -38,7 +46,7 @@ Execute these steps to run your load test:
     cd my-load-test
     ```
 
-3.  Edit the `kustomization.yaml` file to specify how many load generation accounts to use, as well as
+4.  Edit the `kustomization.yaml` file to specify how many load generation accounts to use, as well as
     name of your load-test cluster and which Scalyr server to send the logs (`www.scalyr.com` vs `eu.scalyr.com`)
   
     Here is an example that load tests two Scalyr accounts, sending the logs to `www.scalyr.com` with a cluster
@@ -72,7 +80,7 @@ Execute these steps to run your load test:
        - SCALYR_K8S_CLUSTER_NAME=my-load-test
     ```
 
-  4.  Configure the Scalyr API keys.
+  5.  Configure the Scalyr API keys.
   
       To authorize your pods to upload logs to your Scalyr accounts, you must create a configuration
       file holding a write logs API key for each account.
@@ -97,7 +105,7 @@ Execute these steps to run your load test:
       
 
   
-  5.  Configure how much load to generate per account.
+  6.  Configure how much load to generate per account.
   
       The load generated per account is controlled by two factors:  the number of pods run per account
       and the amount of logs generated per pod.  We recommend you scale the load by only adjusting the
@@ -122,12 +130,12 @@ Execute these steps to run your load test:
       With 5 replicas, we would generate 25MB/s per load account, giving us a total of 50MB/s of load
       across the two accounts.
   
-  6.  Start the load test
+  7.  Start the load test
   
       To start the load test, execute the following command in your load test directory:
       
       ```
-      kubectl apply -k .
+      kustomize build . | kubectl apply -f -
       ```
       
       You should check to make sure all of the pods started successfully by running the
@@ -143,20 +151,13 @@ Execute these steps to run your load test:
       Once the load test is running, you can log into each of the load generation accounts
       and verify the are receiving the logs.
  
-  7.  End the load test
+  8.  End the load test
   
       To stop the load test, execute the following command in your load test directory:
       
       ```
-      kubectl delete -k .
+      kustomize build . | kubectl delete -f -
       ```
-      
-  
-## Issues with kustomize
-
-The manifest files in this repository rely on `kustomize`.  Unfortunately, the version of `kustomize` that is included
-in most recent versions of `kubectl` is very old compared to the standalone `kustomize` binary and uses non-deprecated
-field names.  We choose target these files for the version included in `kubectl`.
 
 ## Details
 

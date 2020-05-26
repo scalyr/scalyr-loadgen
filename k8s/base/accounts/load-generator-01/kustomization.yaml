@@ -3,6 +3,12 @@ bases:
 
 nameSuffix: '-01'
 
-patchesStrategicMerge:
-- load-generator-01.yaml
+patches:
+  - path: load-generator-01.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: load-generator
+      namespace: scalyr-loadgen
 

@@ -33,8 +33,14 @@ spec:
         command: ["/bin/flog"]
         # To adjust the amount of logs produced by flog, edit the number after `-m`.  That is the
         # number of megabytes of logs to write per second
-        args: ["--loop", "--format", "apache_combined", "-m", "5", "-r", "/tmp/flog_telemetry.log"]
+        args: ["--loop", "--format", "apache_combined", "-m", "$(FLOG_MBS)", "-r", "/tmp/flog_telemetry.log"]
 
+        env:
+        - name: FLOG_MBS
+          valueFrom:
+            configMapKeyRef:
+              name: load-generator-configmap
+              key: LOG_MBS_PER_POD
         volumeMounts:
         - name: flogtmp
           mountPath: /tmp
