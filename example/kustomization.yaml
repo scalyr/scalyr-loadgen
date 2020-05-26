@@ -31,14 +31,14 @@ configMapGenerator:
   namespace: scalyr-loadgen
   behavior: replace
   literals:
-    - SCALYR_K8S_CLUSTER_NAME=your-loadtest-cluster
+    - SCALYR_K8S_CLUSTER_NAME=loadgen-telemetry-cluster
 # Uncomment the next line to use the eu.scalyr.com instead of www.scalyr.com
 #    - SCALYR_SERVER=https://app.eu.scalyr.com
 - name: load-generator-configmap
   namespace: scalyr-loadgen
   behavior: replace
   literals:
-    - SCALYR_K8S_CLUSTER_NAME=your-loadtest-cluster
+    - SCALYR_K8S_CLUSTER_NAME=loadgen-cluster
     - LOG_MBS_PER_POD=5
 # Uncomment the next line to use the eu.scalyr.com instead of www.scalyr.com
 #    - SCALYR_SERVER=https://app.eu.scalyr.com

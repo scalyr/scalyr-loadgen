@@ -72,12 +72,12 @@ Execute these steps to run your load test:
        namespace: scalyr-loadgen
        behavior: replace
        literals:
-       - SCALYR_K8S_CLUSTER_NAME=my-load-test
+       - SCALYR_K8S_CLUSTER_NAME=loadgen-telemetry-cluster
      - name: load-generator-configmap
        namespace: scalyr-loadgen
        behavior: replace
        literals:
-       - SCALYR_K8S_CLUSTER_NAME=my-load-test
+       - SCALYR_K8S_CLUSTER_NAME=loadgen-cluster
     ```
 
   5.  Configure the Scalyr API keys.

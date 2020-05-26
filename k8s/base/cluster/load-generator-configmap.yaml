@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 data:
-  SCALYR_K8S_CLUSTER_NAME: scalyr-loadtest
+  SCALYR_K8S_CLUSTER_NAME: loadgen-cluster
   # The MB/s of logs generated per pod
   LOG_MBS_PER_POD: 5
   #
