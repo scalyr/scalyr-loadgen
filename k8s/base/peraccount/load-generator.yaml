@@ -1,0 +1,154 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-generator
+  namespace: scalyr-loadgen
+spec:
+  # Adjust this number to change how many load generators are run per account.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: load-generator
+  template:
+    metadata:
+      name: load-generator
+      labels:
+        app: load-generator
+      annotations:
+        log.config.scalyr.com/attributes.parser: "apacheParser"
+        log.config.scalyr.com/agent-telemetry.attributes.parser: "scalyrAgentLog"
+        log.config.scalyr.com/flog-telemetry.attributes.parser: "flogTelemetryParser"
+    spec:
+      serviceAccountName: scalyr-service-account
+
+      containers:
+      - name: flog-load
+        image: scalyr/flog:v1
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 200m
+        command: ["/bin/flog"]
+        # To adjust the amount of logs produced by flog, edit the number after `-m`.  That is the
+        # number of megabytes of logs to write per second
+        args: ["--loop", "--format", "apache_combined", "-m", "5", "-r", "/tmp/flog_telemetry.log"]
+
+        volumeMounts:
+        - name: flogtmp
+          mountPath: /tmp
+      - name: flog-telemetry
+        image: busybox
+        args: [/bin/sh, -c, 'while ! tail -n+1 -F /tmp/flog_telemetry.log ; do sleep 1 ; done']
+        volumeMounts:
+        - name: flogtmp
+          mountPath: /tmp
+
+      - name: scalyr-agent
+        image: scalyr/scalyr-k8s-agent:2.1.3
+        imagePullPolicy: Always
+        env:
+          - name: SCALYR_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: loadgen-api-keys
+                key: load-generator-write-logs-key
+          - name: SCALYR_K8S_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: SCALYR_K8S_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: SCALYR_K8S_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: SCALYR_K8S_POD_UID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.uid
+          - name: SCALYR_K8S_KUBELET_HOST_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: SCALYR_K8S_SIDECAR_MODE
+            value: "true"
+          - name: SCALYR_K8S_EVENTS_DISABLE
+            value: "true"
+          - name: SCALYR_REPORT_CONTAINER_METRICS
+            value: "false"
+          - name: SCALYR_K8S_REPORT_CONTAINER_METRICS
+            value: "false"
+          - name: SCALYR_CONTAINER_GLOBS
+            value: "*log-load*"
+          - name: SCALYR_COMPRESSION_TYPE
+            value: "deflate"
+          - name: SCALYR_COMPRESSION_LEVEL
+            value: "6"
+          - name:  SCALYR_MAX_LINE_SIZE
+            value: "49900"
+          - name: SCALYR_MAX_ALLOWED_REQUEST_SIZE
+            value: "5900000"
+          - name: SCALYR_PIPELINE_THRESHOLD
+            value: "0"
+          - name: SCALYR_MIN_REQUEST_SPACING_INTERVAL
+            value: "0.1"
+          - name: SCALYR_MAX_REQUEST_SPACING_INTERVAL
+            value: "1"
+          - name: SCALYR_MAX_LOG_OFFSET_SIZE
+            value: "200000000"
+          - name: SCALYR_MAX_EXISTING_LOG_OFFSET_SIZE
+            value: "200000000"
+        envFrom:
+          - configMapRef:
+              name: load-generator-configmap
+        resources:
+          limits:
+            memory: 150Mi
+          requests:
+            memory: 60Mi
+            cpu: 300m
+        volumeMounts:
+        - name: varlogscalyr
+          mountPath: /var/log/scalyr-agent-2
+        - name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers
+          readOnly: true
+        - name: varlogpods
+          mountPath: /var/log/pods
+          readOnly: true
+        - name: varlogcontainers
+          mountPath: /var/log/containers
+          readOnly: true
+        - name: dockersock
+          mountPath: /var/scalyr/docker.sock
+      - name: agent-telemetry
+        image: busybox
+        args: [/bin/sh, -c, 'while ! tail -n+1 -F /var/log/scalyr-agent-2/agent.log ; do sleep 1 ; done']
+        volumeMounts:
+        - name: varlogscalyr
+          mountPath: /var/log/scalyr-agent-2
+
+      #
+      # SIDECAR SCALYR AGENT NEEDS THESE HOST PATHS MAPPED
+      #
+      volumes:
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
+      - name: varlogpods
+        hostPath:
+          path: /var/log/pods
+      - name: varlogcontainers
+        hostPath:
+          path: /var/log/containers
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock
+      - name: varlogscalyr
+        emptyDir: {}
+      - name: flogtmp
+        emptyDir: {}

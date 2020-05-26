@@ -1,0 +1,8 @@
+bases:
+- ../../peraccount
+
+nameSuffix: '-09'
+
+patchesStrategicMerge:
+- load-generator-09.yaml
+

@@ -1,0 +1,17 @@
+resources:
+- scalyr-loadgen.yaml
+- scalyr-service-account.yaml
+- loadgen-telemetry-configmap.yaml
+- load-generator-configmap.yaml
+- loadgen-telemetry-daemonset.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+- name: loadgen-api-keys
+  namespace: scalyr-loadgen
+  literals:
+  - telemetry-write-logs-key=override_me
+  - load-generator-write-logs-key=override_me
+

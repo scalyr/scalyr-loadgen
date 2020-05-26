@@ -1,0 +1,4 @@
+telemetry-write-logs-key=<Get a write logs key from /keys >
+load-generator-01-write-logs-key=<Get a write logs key from /keys >
+load-generator-02-write-logs-key=<Get a write logs key from /keys >
+

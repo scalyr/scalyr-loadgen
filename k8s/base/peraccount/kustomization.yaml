@@ -1,0 +1,20 @@
+resources:
+- load-generator.yaml
+
+#generatorOptions:
+#  disableNameSuffixHash: true
+
+#secretGenerator:
+#- name: load-generator-keys
+#  namespace: scalyr-loadgen
+#  literals:
+#  - write-logs-key=override_me
+
+
+
+
+  
+
+
+
+
