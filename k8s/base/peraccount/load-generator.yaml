@@ -29,7 +29,7 @@ spec:
           limits:
             memory: 100Mi
           requests:
-            cpu: 200m
+            cpu: 300m
         command: ["/bin/flog"]
         # To adjust the amount of logs produced by flog, edit the number after `-m`.  That is the
         # number of megabytes of logs to write per second
