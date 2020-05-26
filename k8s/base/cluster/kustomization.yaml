@@ -9,9 +9,10 @@ generatorOptions:
   disableNameSuffixHash: true
 
 secretGenerator:
-- name: loadgen-api-keys
-  namespace: scalyr-loadgen
-  literals:
+- literals:
   - telemetry-write-logs-key=override_me
   - load-generator-write-logs-key=override_me
-
+  name: loadgen-api-keys
+  namespace: scalyr-loadgen
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization

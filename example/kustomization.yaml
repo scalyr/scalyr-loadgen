@@ -1,9 +1,38 @@
-bases:
+# Needed to get around issue of sharing the `loadgen-api-keys` secret object
+# between the peraccount and cluster manifest files.  (The peraccount
+# manifest files's reference to the secret key is not updated)
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+- behavior: replace
+  envs:
+  - api-keys.txt
+  name: loadgen-api-keys
+  namespace: scalyr-loadgen
+
+configMapGenerator:
+- behavior: replace
+  literals:
+  - SCALYR_K8S_CLUSTER_NAME=your-loadtest-cluster
+# Uncomment the next line to use the eu.scalyr.com instead of www.scalyr.com
+#    - SCALYR_SERVER=https://app.eu.scalyr.com
+  name: loadgen-telemetry-configmap
+  namespace: scalyr-loadgen
+- behavior: replace
+  literals:
+  - SCALYR_K8S_CLUSTER_NAME=your-loadtest-cluster
+  - LOG_MBS_PER_POD=5
+  name: load-generator-configmap
+  namespace: scalyr-loadgen
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
 - ../k8s/base/cluster
-# Uncomment a line for each team account your wish to generator load for.
-# Note, you must have the API keys for the same number of accounts in `api-keys.txt`
 - ../k8s/base/accounts/load-generator-01
 - ../k8s/base/accounts/load-generator-02
+# Uncomment a line for each team account your wish to generator load for.
+# Note, you must have the API keys for the same number of accounts in `api-keys.txt`
 # - ../k8s/base/accounts/load-generator-03
 # - ../k8s/base/accounts/load-generator-04
 # - ../k8s/base/accounts/load-generator-05
@@ -12,36 +41,4 @@ bases:
 # - ../k8s/base/accounts/load-generator-08
 # - ../k8s/base/accounts/load-generator-09
 # - ../k8s/base/accounts/load-generator-10
-
-# Needed to get around issue of sharing the `loadgen-api-keys` secret object
-# between the peraccount and cluster manifest files.  (The peraccount
-# manifest files's reference to the secret key is not updated)
-generatorOptions:
-  disableNameSuffixHash: true
-
-secretGenerator:
-- name: loadgen-api-keys
-  namespace: scalyr-loadgen
-  behavior: replace
-  envs:
-  - api-keys.txt
-
-configMapGenerator:
-- name: loadgen-telemetry-configmap
-  namespace: scalyr-loadgen
-  behavior: replace
-  literals:
-    - SCALYR_K8S_CLUSTER_NAME=your-loadtest-cluster
-# Uncomment the next line to use the eu.scalyr.com instead of www.scalyr.com
-#    - SCALYR_SERVER=https://app.eu.scalyr.com
-- name: load-generator-configmap
-  namespace: scalyr-loadgen
-  behavior: replace
-  literals:
-    - SCALYR_K8S_CLUSTER_NAME=your-loadtest-cluster
-    - LOG_MBS_PER_POD=5
-# Uncomment the next line to use the eu.scalyr.com instead of www.scalyr.com
-#    - SCALYR_SERVER=https://app.eu.scalyr.com
-
-
 
