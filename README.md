@@ -33,7 +33,7 @@ Execute these steps to run your load test:
 2.  Create a new directory to hold the configuration for your load test
 
     ```
-    cd scalyr-loadgen/k8s
+    cd scalyr-loadgen
     cp -r example my-load-test
     cd my-load-test
     ```
@@ -46,9 +46,9 @@ Execute these steps to run your load test:
   
     ```
       bases:
-      - ../base/cluster
-      - ../base/accounts/load-generator-01
-      - ../base/accounts/load-generator-02
+      - ../k8s/base/cluster
+      - ../k8s/base/accounts/load-generator-01
+      - ../k8s/base/accounts/load-generator-02
 
       generatorOptions:
         disableNameSuffixHash: true
