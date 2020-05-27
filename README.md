@@ -67,6 +67,15 @@ Execute these steps to run your load test:
         behavior: replace
         env: api-keys.txt
 
+      patches:
+      - target:
+        kind: Deployment
+        name: load-generator*
+        patch: |-
+        - op: replace
+          path: /spec/replicas
+          value: 1
+      
      configMapGenerator:
      - name: loadgen-telemetry-configmap
        namespace: scalyr-loadgen
@@ -113,23 +122,32 @@ Execute these steps to run your load test:
       number of pods per account, leaving the default value of 5MB/s of logs generated per pod.
       
       To increase the number of pods per account, you need to modify the number of replicas listed
-      in the `k8s/base/peraccount/load-generator.yaml` manifest file.  The default is 1.
+      in the `patches` section of your `kustomization.yaml` file.
       
       Here is an example where we adjust the replicas to 5:
       
       ```
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: load-generator
-        namespace: scalyr-loadgen
-      spec:
-        replicas: 5
+      ...
+
+      patches:
+      - target:
+        kind: Deployment
+        name: load-generator*
+        patch: |-
+        - op: replace
+          path: /spec/replicas
+          value: 5
       ...
       ```
       
       With 5 replicas, we would generate 25MB/s per load account, giving us a total of 50MB/s of load
       across the two accounts.
+
+      You may also change the amount of logs generated per pod by modifying the `LOGS_MBS_PER_POD`
+      entry in the `load-generator-configmap` in our `kustomization.yaml` file.  The value may be
+      any number (including fractional) less than 5 and represents the number megabytes of logs
+      will be generated per second per pod.  Note, if you do reduce this value, you will be
+      required to run more pods and expend more CPU to generate the target rate.
   
   7.  Start the load test
   
