@@ -15,7 +15,7 @@ spec:
       labels:
         app: load-generator
       annotations:
-        log.config.scalyr.com/attributes.parser: "apacheParser"
+        log.config.scalyr.com/attributes.parser: "accessLog"
         log.config.scalyr.com/agent-telemetry.attributes.parser: "scalyrAgentLog"
         log.config.scalyr.com/flog-telemetry.attributes.parser: "flogTelemetryParser"
     spec:
