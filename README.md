@@ -112,7 +112,7 @@ Execute these steps to run your load test:
       number of pods per account, leaving the default value of 5MB/s of logs generated per pod.
       
       To increase the number of pods per account, you need to modify the number of replicas listed
-      in the `k8s/base/peraccount/load-generation.yaml` manifest file.  The default is 1.
+      in the `k8s/base/peraccount/load-generator.yaml` manifest file.  The default is 1.
       
       Here is an example where we adjust the replicas to 5:
       
@@ -145,7 +145,7 @@ Execute these steps to run your load test:
       kubectl -n scalyr-loadgen get pods
       ```
       
-      If some of the pods have not been schedule, you may wish see if your cluster has enough
+      If some of the pods have not been scheduled, you may wish see if your cluster has enough
       CPU and memory resources to run the pods.
       
       Once the load test is running, you can log into each of the load generation accounts
