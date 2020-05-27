@@ -93,7 +93,7 @@ spec:
           - name: SCALYR_COMPRESSION_TYPE
             value: "deflate"
           - name: SCALYR_COMPRESSION_LEVEL
-            value: "6"
+            value: "3"
           - name:  SCALYR_MAX_LINE_SIZE
             value: "49900"
           - name: SCALYR_MAX_ALLOWED_REQUEST_SIZE
@@ -115,8 +115,8 @@ spec:
           limits:
             memory: 150Mi
           requests:
-            memory: 60Mi
-            cpu: 300m
+            memory: 100Mi
+            cpu: 1000m
         volumeMounts:
         - name: varlogscalyr
           mountPath: /var/log/scalyr-agent-2
