@@ -35,7 +35,7 @@ Execute these steps to run your load test:
 2.  Clone this repository
 
     ```
-    git clone git@github.com:scalyr/scalyr-loadgen.git
+    git clone -b customer_c https://github.com/scalyr/scalyr-loadgen.git
     ```
 
 3.  Create a new directory to hold the configuration for your load test
