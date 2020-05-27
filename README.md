@@ -78,6 +78,7 @@ Execute these steps to run your load test:
        behavior: replace
        literals:
        - SCALYR_K8S_CLUSTER_NAME=loadgen-cluster
+       - LOG_MBS_PER_POD=5
     ```
 
   5.  Configure the Scalyr API keys.
@@ -123,7 +124,7 @@ Execute these steps to run your load test:
         name: load-generator
         namespace: scalyr-loadgen
       spec:
-        replicas: 1
+        replicas: 5
       ...
       ```
       

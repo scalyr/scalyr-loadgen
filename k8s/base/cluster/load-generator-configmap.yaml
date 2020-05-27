@@ -4,9 +4,6 @@ data:
   SCALYR_K8S_CLUSTER_NAME: loadgen-cluster
   # The MB/s of logs generated per pod
   LOG_MBS_PER_POD: 5
-  #
-  # EU customers must uncomment this next line:
-  # SCALYR_SERVER: "https://upload.eu.scalyr.com"
 metadata:
   name: load-generator-configmap
   namespace: scalyr-loadgen
