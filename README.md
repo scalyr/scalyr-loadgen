@@ -4,7 +4,7 @@ Configuration and instructions for running log ingestion load tests on Scalyr
 ## Overview
 
 This repository contains Kubernetes manifest files for running log ingestion load tests on Scalyr.  The load generation
-consists of pods writing HTTP access logs in Apache combined format.  Each pod consists of two main pods, one
+consists of pods writing HTTP access logs in Apache combined format.  Each pod consists of two main containers, one
 generating the access logs and one running the Scalyr Agent to upload the logs to Scalyr.  A pod can be configured to 
 generate up to 5MB/s of access logs.  The pods are grouped into Kubernetes depoloyments, one for each Scalyr account
 being load tested (you can configured up to 10).  You can scale the overall load generation by increasing the number
