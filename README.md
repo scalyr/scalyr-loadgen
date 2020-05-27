@@ -50,7 +50,7 @@ Execute these steps to run your load test:
     name of your load-test cluster and which Scalyr server to send the logs (`www.scalyr.com` vs `eu.scalyr.com`)
   
     Here is an example that load tests two Scalyr accounts, sending the logs to `www.scalyr.com` with a cluster
-    name of `my-load-test`
+    name of `loadgen-cluster` for the load generation and `loadgen-telemetry-cluster` for the telemetry logs.
   
     ```
       bases:
