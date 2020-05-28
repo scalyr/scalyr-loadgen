@@ -4,14 +4,14 @@ bases:
 # Note, you must have the API keys for the same number of accounts in `api-keys.txt`
 - ../k8s/base/accounts/load-generator-01
 - ../k8s/base/accounts/load-generator-02
-# - ../k8s/base/accounts/load-generator-03
-# - ../k8s/base/accounts/load-generator-04
-# - ../k8s/base/accounts/load-generator-05
-# - ../k8s/base/accounts/load-generator-06
-# - ../k8s/base/accounts/load-generator-07
-# - ../k8s/base/accounts/load-generator-08
-# - ../k8s/base/accounts/load-generator-09
-# - ../k8s/base/accounts/load-generator-10
+- ../k8s/base/accounts/load-generator-03
+- ../k8s/base/accounts/load-generator-04
+- ../k8s/base/accounts/load-generator-05
+- ../k8s/base/accounts/load-generator-06
+- ../k8s/base/accounts/load-generator-07
+- ../k8s/base/accounts/load-generator-08
+- ../k8s/base/accounts/load-generator-09
+- ../k8s/base/accounts/load-generator-10
 
 # Needed to get around issue of sharing the `loadgen-api-keys` secret object
 # between the peraccount and cluster manifest files.  (The peraccount
@@ -35,7 +35,7 @@ patches:
   patch: |-
     - op: replace
       path: /spec/replicas
-      value: 1
+      value: 12
 
 configMapGenerator:
 - name: loadgen-telemetry-configmap
