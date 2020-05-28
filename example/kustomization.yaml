@@ -54,7 +54,7 @@ configMapGenerator:
     - SCALYR_SERVER=https://logstaging.scalyr.com
     # Modify this value to change the number of log bytes generated
     # (in MB/s) per pod.  This value may be fractional.
-    - LOG_MBS_PER_POD=5.0
+    - LOG_MBS_PER_POD=2.0
 
 
 
