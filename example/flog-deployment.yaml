@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flog
+  labels:
+    app: flog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flog
+  template:
+    metadata:
+      labels:
+        app: flog
+    spec:
+      containers:
+      - name: flog-load
+        image: scalyr/flog:v1
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 300m
+        command: ["/bin/flog"]
+        # To adjust the amount of logs produced by flog, edit the number after `-m`.  That is the
+        # number of megabytes of logs to write per second
+        args: ["--loop", "--format", "apache_combined", "-m", "", "-r", "/tmp/flog_telemetry.log"]
+
