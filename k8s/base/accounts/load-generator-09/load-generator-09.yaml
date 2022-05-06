@@ -5,6 +5,21 @@ metadata:
 spec:
   template:
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: purpose
+                    operator: In
+                    values:
+                      - general
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: load-generator
+              topologyKey: kubernetes.io/hostname
       containers:
       - name: scalyr-agent
         env:

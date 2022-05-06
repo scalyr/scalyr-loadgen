@@ -19,7 +19,7 @@ spec:
         log.config.scalyr.com/agent-telemetry.attributes.parser: "scalyrAgentLog"
         log.config.scalyr.com/flog-telemetry.attributes.parser: "flogTelemetryParser"
     spec:
-      serviceAccountName: scalyr-service-account
+      serviceAccountName: scalyr-loadgen-service-account
 
       containers:
       - name: flog-load

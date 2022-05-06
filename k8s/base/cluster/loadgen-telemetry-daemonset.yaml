@@ -12,7 +12,7 @@ spec:
       labels:
         app: loadgen-telemetry
     spec:
-      serviceAccountName: scalyr-service-account
+      serviceAccountName: scalyr-loadgen-service-account
       containers:
       - name: scalyr-agent
         image:  scalyr/scalyr-k8s-agent:2.1.29
