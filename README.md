@@ -105,7 +105,7 @@ Execute these steps to run your load test:
       (https://app.scalyr.com/keys) for accounts on eu.scalyr.com.  The log access keys are listed in the first
       section.  We suggest you create a new write key for your load test by using the "Add Key" button.
       
-      In our example above, our `api-keys.txt` file may look like:
+      In our example above, our `api-keys.txt.example` file may look like:
       
       ```
       telemetry-write-logs-key=06XAnxxGLzA7V1/2KQuulqClQNaw12345-
